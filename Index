@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Galleria al microscopio con quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #eef1f5;
+      text-align: center;
+      padding: 40px;
+    }
+
+    img {
+      max-width: 90%;
+      height: auto;
+      border: 2px solid #444;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      margin-bottom: 10px;
+    }
+
+    .counter, .description, .question, .result {
+      margin: 10px 0;
+      font-weight: bold;
+      color: #333;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .result {
+      font-size: 18px;
+      color: #006400;
+    }
+
+    .wrong {
+      color: #c40000;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Galleria al microscopio</h1>
+  <img id="microscope-image" src="" alt="Immagine al microscopio">
+  <div class="counter" id="counter"></div>
+  <div class="description" id="description"></div>
+
+  <div class="question">Che tipo di fibra minerale è?</div>
+  <div>
+    <button onclick="checkAnswer('Anfibolo')">Anfibolo</button>
+    <button onclick="checkAnswer('Serpentino')">Serpentino</button>
+  </div>
+  <div class="result" id="result"></div>
+
+  <div style="margin-top: 20px;">
+    <button onclick="previousImage()">Immagine precedente</button>
+    <button onclick="nextImage()">Immagine successiva</button>
+  </div>
+
+  <script>
+    const images = [
+      {
+        src: "https://raw.githubusercontent.com/Giuseppe575/Immagine-/refs/heads/main/IMG_1773.jpeg",
+        desc: "Fibre d’amosite osservate in microscopia ottica ",
+        answer: "Anfibolo"
+      },
+      {
+        src: "https://raw.githubusercontent.com/Giuseppe575/Immagine-/refs/heads/main/IMG_1781.jpeg",
+        desc: "Struttura fibrosa appartenente al gruppo degli anfiboli",
+        answer: "Anfibolo"
+      },
+      {
+        src: "https://raw.githubusercontent.com/Giuseppe575/Immagine-/refs/heads/main/IMG_1774.jpeg",
+        desc: "Dettaglio delle fibre minerali",
+        answer: "Anfibolo"
+      }
+    ];
+
+    let currentIndex = 0;
+
+    const imgElement = document.getElementById("microscope-image");
+    const counterElement = document.getElementById("counter");
+    const descriptionElement = document.getElementById("description");
+    const resultElement = document.getElementById("result");
+
+    function updateGallery() {
+      const image = images[currentIndex];
+      imgElement.src = image.src;
+      counterElement.textContent = `Immagine ${currentIndex + 1} di ${images.length}`;
+      descriptionElement.textContent = image.desc;
+      resultElement.textContent = ""; // reset risultato
+      resultElement.className = "result";
+    }
+
+    function nextImage() {
+      currentIndex = (currentIndex + 1) % images.length;
+      updateGallery();
+    }
+
+    function previousImage() {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      updateGallery();
+    }
+
+    function checkAnswer(userAnswer) {
+      const correctAnswer = images[currentIndex].answer;
+      if (userAnswer === correctAnswer) {
+        resultElement.textContent = "Corretto!";
+        resultElement.className = "result";
+      } else {
+        resultElement.textContent = "Sbagliato!";
+        resultElement.className = "result wrong";
+      }
+    }
+
+    // Avvio iniziale
+    updateGallery();
+  </script>
+
+</body>
+</html>
